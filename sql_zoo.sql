@@ -99,3 +99,65 @@ SELECT * FROM nobel
                    'Jimmy Carter',
                    'Barack Obama'
                  )
+7. 
+SELECT winner FROM nobel
+WHERE winner LIKE 'John%'
+8.
+SELECT * FROM nobel
+WHERE subject LIKE 'Physics' 
+AND yr = 1980
+OR subject LIKE 'Chemistry' 
+AND yr = 1984
+9.
+SELECT * FROM nobel
+WHERE subject NOT IN ('Chemistry', 'Medicine')
+AND yr = 1980
+10.
+SELECT * FROM nobel
+WHERE subject LIKE 'Medicine'
+AND yr < 1910
+OR subject LIKE 'Literature'
+AND yr >= 2004
+11.
+SELECT * FROM nobel
+WHERE winner LIKE 'PETER GR%NBERG'
+12.
+SELECT * FROM nobel
+WHERE winner LIKE 'EUGENE O''NEILL'
+13.
+SELECT winner, yr, subject FROM nobel 
+WHERE winner Like 'Sir%' 
+ORDER BY yr DESC,winner
+14.
+SELECT winner, subject
+  FROM nobel
+ WHERE yr=1984
+ ORDER BY subject IN ('Physics', 'Chemistry'),subject, winner
+/*Tutorial 3 */
+1. 
+SELECT name FROM world
+  WHERE population >
+     (SELECT population FROM world
+      WHERE name='Russia')
+2.
+SELECT name FROM world
+WHERE (gdp / population) >
+  (SELECT (gdp / population) FROM world
+   WHERE name LIKE 'United Kingdom')
+AND continent LIKE 'Europe'
+3.
+SELECT name, continent FROM world
+WHERE continent LIKE (SELECT continent FROM world
+      WHERE name='Argentina') 
+OR continent LIKE (SELECT continent FROM world
+      WHERE name='Australia') 
+ORDER BY name
+4.
+SELECT name FROM world
+WHERE population > (SELECT population FROM world
+WHERE name = 'Canada')
+AND population < (SELECT population FROM world
+WHERE name = 'Poland')
+5.
+SELECT name, CONCAT(ROUND(population / (SELECT population FROM world WHERE name = 'Germany') * 100),'%') AS "percentage" FROM world
+WHERE continent = 'Europe'
