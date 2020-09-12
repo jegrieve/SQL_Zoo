@@ -243,3 +243,79 @@ SELECT DISTINCT player
   FROM game JOIN goal ON matchid = id 
     WHERE teamid != 'GER'
 AND (team1 = 'GER' OR team2 = 'GER')
+9.
+SELECT teamname,count(teamname) AS 'Goals'
+FROM eteam JOIN goal
+ON eteam.id=goal.teamid
+group by teamname
+10.
+SELECT stadium,COUNT(*) AS 'Goals'
+FROM game JOIN goal
+WHERE game.id=goal.matchid
+GROUP BY stadium
+11.
+SELECT matchid,mdate,COUNT(gtime) AS 'Goals'
+FROM game JOIN goal
+ON goal.matchid = game.id
+WHERE (team1 = 'POL' OR team2 = 'POL')
+GROUP BY matchid,mdate
+12.
+SELECT matchid,mdate,COUNT(gtime) AS 'Goals'
+FROM game JOIN goal
+ON goal.matchid = game.id
+WHERE goal.teamid = 'GER'
+GROUP BY matchid,mdate
+13.
+SELECT game.mdate, game.team1, 
+SUM(CASE WHEN goal.teamid = game.team1 THEN 1 ELSE 0 END) AS 'score1',
+game.team2,
+SUM(CASE WHEN goal.teamid = game.team2 THEN 1 ELSE 0 END) AS 'score2'
+FROM game LEFT JOIN goal ON matchid = id
+GROUP BY game.id,game.mdate, game.team1, game.team2 
+ORDER BY mdate,matchid,team1,team2
+/*Tutorial 6 */
+1.
+SELECT name FROM teacher
+WHERE dept IS NULL
+2.
+SELECT teacher.name, dept.name
+ FROM teacher INNER JOIN dept
+           ON (teacher.dept=dept.id)
+3.
+SELECT teacher.name, dept.name
+ FROM teacher LEFT JOIN dept
+           ON (teacher.dept=dept.id)
+4.
+SELECT teacher.name, dept.name
+ FROM teacher RIGHT JOIN dept
+           ON (teacher.dept=dept.id)
+5.
+SELECT name, COALESCE(mobile,'07986 444 2266') AS 'mobile'
+  FROM teacher
+6.
+SELECT teacher.name, COALESCE(dept.name,'None')
+FROM teacher LEFT JOIN dept
+ON teacher.dept=dept.id
+7.
+SELECT COUNT(name), COUNT(mobile)
+FROM teacher
+8.
+SELECT DISTINCT dept.name, COUNT(teacher.name)
+FROM teacher RIGHT JOIN dept ON teacher.dept = dept.id
+GROUP BY dept.name
+9.
+SELECT teacher.name
+       ,CASE WHEN (teacher.dept = 1 OR teacher.dept = 2)
+             THEN 'Sci'
+             ELSE 'Art'
+end
+FROM teacher
+10.
+SELECT teacher.name
+       ,CASE WHEN (teacher.dept = 1 OR teacher.dept = 2)
+             THEN 'Sci'
+             WHEN (teacher.dept = 3)
+             THEN 'Art'
+             ELSE 'None'
+end
+FROM teacher
